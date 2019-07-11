@@ -1,1 +1,63 @@
-# intellisense-errors-Visual-Studio-2019-2017
+
+default arguments : https://en.cppreference.com/w/cpp/language/default_arguments
+```cpp
+#include <iostream>
+
+void foo(int, int = 6);
+
+// error: default argument no at end of parameter list (shouldn't be marked as error)
+void foo(int x = 12, int y) {
+    std::cout << x << ' ' << y << '\n';
+}
+
+void bar() {
+    void foo(int, int = 2);
+    
+// error: default argument no at end of parameter list (shouldn't be marked as error)
+    void foo(int = 4, int);
+  
+    foo();
+}
+
+template <class, class = void>
+struct sss;
+
+// error: default argument no at end of parameter list (shouldn't be marked as error)
+template <class = void, class>
+struct sss {
+};
+
+//no intellisense errors in the caller
+int main() {
+    foo(); bar();
+    sss <> {};
+    return 0;
+}
+```
+-
+template specialization
+```cpp
+template <auto>
+struct sss;
+
+//error: template parameter "class_t" is not used in or cannot be deduced from the template argument list of class template "sss<ptr>"
+//error: template parameter "member_t" is not used in or cannot be deduced from the template argument list of class template "sss<ptr>"
+template <class class_t, class member_t, member_t class_t::*ptr>
+struct sss <ptr> {
+};
+
+struct point {
+	int x, y, z;
+};
+
+//error: incomplete type is not allowed
+sss <&point::x> ptr_to_x{};
+//error: incomplete type is not allowed
+sss <&point::y> ptr_to_y{};
+//error: incomplete type is not allowed
+sss <&point::z> ptr_to_z{};
+
+int main() {
+	return 0;
+}
+```
