@@ -12,7 +12,7 @@ void foo(int x = 12, int y) {
     std::cout << x << ' ' << y << '\n';
 }
 
-//
+// ~example1
 
 // example2
 
@@ -25,7 +25,7 @@ void bar() {
     foo();
 }
 
-//
+// ~example2
 
 // example3
 
@@ -37,7 +37,7 @@ template <class = void, class>
 struct sss {
 };
 
-//
+// ~example3
 
 // main
 
@@ -48,7 +48,7 @@ int main() {
     return 0;
 }
 
-//
+// ~main
 ```
 - template specialization
 ```cpp
