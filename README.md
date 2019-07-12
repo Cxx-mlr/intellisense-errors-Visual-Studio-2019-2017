@@ -3,12 +3,18 @@
 ```cpp
 #include <iostream>
 
+// example1
+
 void foo(int, int = 6);
 
 // error: default argument no at end of parameter list (shouldn't be marked as error)
 void foo(int x = 12, int y) {
     std::cout << x << ' ' << y << '\n';
 }
+
+//
+
+// example2
 
 void bar() {
     void foo(int, int = 2);
@@ -19,6 +25,10 @@ void bar() {
     foo();
 }
 
+//
+
+// example3
+
 template <class, class = void>
 struct sss;
 
@@ -27,12 +37,18 @@ template <class = void, class>
 struct sss {
 };
 
-//no intellisense errors in the caller
+//
+
+// main
+
+// no intellisense errors in the caller
 int main() {
     foo(); bar();
     sss <> {};
     return 0;
 }
+
+//
 ```
 - template specialization
 ```cpp
@@ -57,7 +73,7 @@ sss <&point::y> ptr_to_y{};
 sss <&point::z> ptr_to_z{};
 
 int main() {
-	return 0;
+    return 0;
 }
 ```
 
@@ -67,39 +83,40 @@ int main() {
 #include <functional>
 
 template <class T>
-struct wrapper {
-	constexpr wrapper(T func) : f(func) {
-	}
+class wrapper {
+    public:
+        constexpr wrapper(T func) : f(func) {
+        }
 
-	template <class X0>
-	constexpr decltype(auto) operator< (X0 val) {
-		return [f_ = f, val](auto... args) {
-			return f_(args...) < val;
-		};
-	}
+        template <class X0>
+        constexpr decltype(auto) operator< (X0 val) {
+            return [f_ = f, val](auto... args) {
+                return f_(args...) < val;
+            };
+        }
 
-	private:
-		const T f;
+    private:
+        const T f;
 };
 
 constexpr int transform(int val) {
-	return val * 2;
+    return val * 2;
 }
 
 int main() {
-	// error: expression must have a constant value
-	// error: access to uninitialized subobject (member "lambda []auto (auto ...args)->auto::f_") (shouldn't be marked as error)
-	constexpr auto cond = wrapper{transform} < 12;
+// error: expression must have a constant value
+// error: access to uninitialized subobject (member "lambda []auto (auto ...args)->auto::f_") (shouldn't be marked as error)
+    constexpr auto cond = wrapper{transform} < 12;
 
-	//transform(2) < 12
-	if constexpr (cond(2)) {
-		putchar('t');
-	}
+//transform(2) < 12
+    if constexpr (cond(2)) {
+        putchar('t');
+    }
 
-	else {
-		putchar('f');
-	}
-	return 0;
+    else {
+        putchar('f');
+    }
+    return 0;
 }
 ```
 
