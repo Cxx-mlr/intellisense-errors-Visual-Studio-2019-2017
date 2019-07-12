@@ -1,5 +1,5 @@
 
-default arguments : https://en.cppreference.com/w/cpp/language/default_arguments
+- default arguments : https://en.cppreference.com/w/cpp/language/default_arguments
 ```cpp
 #include <iostream>
 
@@ -34,14 +34,13 @@ int main() {
     return 0;
 }
 ```
--
-template specialization
+- template specialization
 ```cpp
 template <auto>
 struct sss;
 
-//error: template parameter "class_t" is not used in or cannot be deduced from the template argument list of class template "sss<ptr>"
-//error: template parameter "member_t" is not used in or cannot be deduced from the template argument list of class template "sss<ptr>"
+// error: template parameter "class_t" is not used in or cannot be deduced from the template argument list of class template "sss<ptr>"
+// error: template parameter "member_t" is not used in or cannot be deduced from the template argument list of class template "sss<ptr>"
 template <class class_t, class member_t, member_t class_t::*ptr>
 struct sss <ptr> {
 };
@@ -50,14 +49,59 @@ struct point {
 	int x, y, z;
 };
 
-//error: incomplete type is not allowed
+// error: incomplete type is not allowed
 sss <&point::x> ptr_to_x{};
-//error: incomplete type is not allowed
+// error: incomplete type is not allowed
 sss <&point::y> ptr_to_y{};
-//error: incomplete type is not allowed
+// error: incomplete type is not allowed
 sss <&point::z> ptr_to_z{};
 
 int main() {
 	return 0;
 }
+```
+
+- others
+```cpp
+#include <iostream>
+#include <functional>
+
+template <class T>
+struct wrapper {
+	constexpr wrapper(T func) : f(func) {
+	}
+
+	template <class X0>
+	constexpr decltype(auto) operator< (X0 val) {
+		return [f_ = f, val](auto... args) {
+			return f_(args...) < val;
+		};
+	}
+
+	private:
+		const T f;
+};
+
+constexpr int transform(int val) {
+	return val * 2;
+}
+
+int main() {
+	// error: expression must have a constant value
+	// error: access to uninitialized subobject (member "lambda []auto (auto ...args)->auto::f_") (shouldn't be marked as error)
+	constexpr auto cond = wrapper{transform} < 12;
+
+	//transform(2) < 12
+	if constexpr (cond(2)) {
+		putchar('t');
+	}
+
+	else {
+		putchar('f');
+	}
+	return 0;
+}
+```
+
+```cpp
 ```
