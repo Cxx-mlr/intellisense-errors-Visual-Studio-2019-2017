@@ -13,7 +13,6 @@ void foo(int x = 12, int y) {
 // ~example1
 
 
-
 // example2
 void bar() {
     void foo(int, int = 2);
@@ -26,7 +25,6 @@ void bar() {
 // ~example2
 
 
-
 // example3
 template <class, class = void>
 struct sss;
@@ -36,7 +34,6 @@ template <class = void, class>
 struct sss {
 };
 // ~example3
-
 
 
 // main
@@ -77,8 +74,7 @@ int main() {
 
 - others
 ```cpp
-#include <iostream>
-#include <functional>
+#include <cstdio>
 
 template <class T>
 class wrapper {
@@ -107,9 +103,7 @@ int main() {
     constexpr auto cond = wrapper{transform} < 12;
 
 //transform(2) < 12
-    if constexpr (cond(2)) {
-        putchar('t');
-    }
+    if constexpr (cond(2)) { putchar('t'); }
 
     else {
         putchar('f');
