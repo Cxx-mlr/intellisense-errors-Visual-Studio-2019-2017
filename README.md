@@ -4,18 +4,17 @@
 #include <iostream>
 
 // example1
-
 void foo(int, int = 6);
 
 // error: default argument no at end of parameter list (shouldn't be marked as error)
 void foo(int x = 12, int y) {
     std::cout << x << ' ' << y << '\n';
 }
-
 // ~example1
 
-// example2
 
+
+// example2
 void bar() {
     void foo(int, int = 2);
     
@@ -24,11 +23,11 @@ void bar() {
   
     foo();
 }
-
 // ~example2
 
-// example3
 
+
+// example3
 template <class, class = void>
 struct sss;
 
@@ -36,18 +35,17 @@ struct sss;
 template <class = void, class>
 struct sss {
 };
-
 // ~example3
 
-// main
 
+
+// main
 // no intellisense errors in the caller
 int main() {
     foo(); bar();
     sss <> {};
     return 0;
 }
-
 // ~main
 ```
 - template specialization
