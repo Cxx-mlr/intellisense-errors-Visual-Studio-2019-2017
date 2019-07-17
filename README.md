@@ -100,9 +100,13 @@ int main() {
 
 // ~example2
 
+// main
+
 int main() {
     return 0;
 }
+
+// ~main
 ```
 
 - others
@@ -135,7 +139,9 @@ int main() {
 // error: access to uninitialized subobject (member "lambda []auto (auto ...args)->auto::f_") (shouldn't be marked as error)
     constexpr auto cond = wrapper{transform} < 12;
 
-//transform(2) < 12
+// error: expression must have a constant value (shouldn't be marked as error)
+// error: temporary object is not constant (shouldn't be marked as error)
+// transform(2) < 12
     if constexpr (cond(2)) { putchar('t'); }
 
     else {
