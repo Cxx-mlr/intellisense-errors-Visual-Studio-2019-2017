@@ -1,7 +1,7 @@
 
 - default arguments : https://en.cppreference.com/w/cpp/language/default_arguments
 ```cpp
-#include <iostream>
+#include <cstdio>
 
 // example1
 
@@ -9,7 +9,7 @@ void foo(int, int = 6);
 
 // error: default argument no at end of parameter list (shouldn't be marked as error)
 void foo(int x = 12, int y) {
-    std::cout << x << ' ' << y << '\n';
+    std::printf("%d %d\n", x, y);
 }
 
 // ~example1
@@ -55,6 +55,8 @@ int main() {
 ```
 - template specialization
 ```cpp
+#include <cstdio>
+
 // example1
 
 template <auto>
@@ -93,8 +95,8 @@ struct S <x, y> {
 };
 
 int main() {
-    printf("%d", S <'a', 0>::value);
-    printf("%d", S <'a', 'b'>::value);
+    std::printf("%d ", S <'a', 0>::value);
+    std::printf("%d ", S <'a', 'b'>::value);
     return 0;
 }
 
@@ -102,9 +104,7 @@ int main() {
 
 // main
 
-int main() {
-    return 0;
-}
+int main() { return 0; }
 
 // ~main
 ```
@@ -121,6 +121,7 @@ class wrapper {
 
         template <class X0>
         constexpr decltype(auto) operator< (X0 val) {
+	// detects f or f_ uninitialized
             return [f_ = f, val](auto... args) {
                 return f_(args...) < val;
             };
@@ -133,6 +134,8 @@ class wrapper {
 constexpr int transform(int val) {
     return val * 2;
 }
+
+// main
 
 int main() {
 // error: expression must have a constant value
@@ -149,7 +152,6 @@ int main() {
     }
     return 0;
 }
-```
 
-```cpp
+// ~main
 ```
