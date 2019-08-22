@@ -101,12 +101,6 @@ int main() {
 }
 
 // ~example2
-
-// main
-
-int main() { return 0; }
-
-// ~main
 ```
 
 - others
